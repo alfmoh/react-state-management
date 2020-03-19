@@ -1,5 +1,5 @@
 /* eslint-disable */
-import React, { Component } from 'react';
+import React, { useState, useEffect } from 'react';
 
 const getStateFromLocalStorage = () => {
   const storage = localStorage.getItem('counterState');
@@ -45,6 +45,10 @@ const Counter = ({ max, step }) => {
   };
   const decrement = () => setCount(count - 1);
   const reset = () => setCount(0);
+
+  useEffect(() => {
+    document.title = `Counter: ${count}`;
+  }, [count]); // if 'count' changes, re-run useEffect()
 
   return (
     <main className="Counter">
