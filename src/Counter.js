@@ -29,10 +29,19 @@ const Counter = ({ max, step }) => {
   // };
 
   // Not passing a func will call the state updater only once.
+  // const increment = () => {
+  //   setCount(count + 1);
+  //   setCount(count + 1);
+  //   setCount(count + 1);
+  // };
+
   const increment = () => {
-    setCount(count + 1);
-    setCount(count + 1);
-    setCount(count + 1);
+    setCount(c => {
+      // important to return a value and not just 'return'
+      // since that will return an undefined.
+      if (c >= max) return c;
+      return c + step;
+    });
   };
   const decrement = () => setCount(count - 1);
   const reset = () => setCount(0);
