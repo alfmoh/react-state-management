@@ -3,18 +3,16 @@ import React, { useState, useEffect } from 'react';
 
 const getStateFromLocalStorage = () => {
   const storage = localStorage.getItem('counterState');
-  if (storage) return JSON.parse(storage);
-  return { count: 0 };
+  if (storage) return JSON.parse(storage).count;
+  return 0;
 };
-const storeStateInLocalStorage = state => {
-  localStorage.setItem('counterState', JSON.stringify(state));
-  const { count } = state;
-  document.title = count;
+const storeStateInLocalStorage = count => {
+  localStorage.setItem('counterState', JSON.stringify({ count }));
   // console.log(localStorage);
 };
 
 const Counter = ({ max, step }) => {
-  const [count, setCount] = React.useState(0);
+  const [count, setCount] = React.useState(getStateFromLocalStorage());
 
   const inc = val => val + 1;
 
@@ -47,9 +45,16 @@ const Counter = ({ max, step }) => {
   const reset = () => setCount(0);
 
   useEffect(() => {
+    // can have single useEffect
+    // storeStateInLocalStorage(count);
+
     document.title = `Counter: ${count}`;
   }, [count]); // if 'count' changes, re-run useEffect()
 
+  // or multiple useEffect
+  useEffect(() => {
+    storeStateInLocalStorage(count);
+  }, [count]);
   return (
     <main className="Counter">
       <p className="count">{count}</p>
